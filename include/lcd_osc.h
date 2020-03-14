@@ -21,7 +21,7 @@ extern uint16_t left_limit;
 void lcd_osc_init(int grid);
 
 /*
- * Starts the Oscilloscope
+ * Runs the Oscilloscope
  */
 
 void osc_run();
@@ -44,13 +44,13 @@ void osc_display_screen(uint8_t * shadow);
  */
 void osc_trigger_wave(uint8_t * shadow);
 
-/*
- * Similar to osc_trigger_wave(), but enables triggering
- * only after manual button
- */
-void osc_trigger_wave_single(uint8_t * shadow);
 
-void draw_screen_cont_ns(uint8_t * buffer);
+
+
+/*
+ * Clears the screen based on the shadow register provided
+ */
+
 void lcd_osc_clear_screen(uint8_t * shadow);
 
 /*
@@ -60,19 +60,37 @@ void lcd_osc_clear_screen(uint8_t * shadow);
 void sample_data(uint8_t *  buffer, uint32_t size );
 
 
+/*
+ * Draws a simple 5x3 digit (0-9) at position x,y 
+ */
 void draw_digit_5x3(uint16_t x, uint16_t y ,uint8_t nr, uint16_t colour);
 
+
+/*
+ * reads the ADC, the control register has to be set before calling
+ * this function
+ */
 uint8_t readADC();
+
+/*
+ * reads the ADC data register first than starts a new conversion
+ */
 uint8_t readADC_sample();
+
 
 
 /* 
  * Displays buffer to screen, deletes previous values if shadow exists
  * The shadow buffer has to be allocated with size (LCD_WIDTH - left_limit - 1)
- * If a previous shadow array already exists set the shadow exists value
  */ 
 
-void draw_screen(uint8_t * buffer ,uint8_t * shadow );
-
 void draw_screen_cont(uint8_t * buffer, uint8_t * shadow);
+
+/*
+ * Displays buffer to screen, clears all the rows as shadow register
+ * is not used.
+ * Slower than draw_screen_cont but does not need as much memory
+ */
+
+void draw_screen_cont_ns(uint8_t * buffer);
 #endif

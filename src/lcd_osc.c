@@ -1,6 +1,13 @@
 #include "lcd_osc.h"
-/*digits 0 - 7*/
+
+/*
+ * Variable indicating the left limit of the screen
+ */
 uint16_t left_limit = 5;
+
+/*
+ * Font for 5x3 digits
+ */
 const uint16_t font_3x5_d[] =
 {
     1,1,1,1,1, 1,0,0,0,1, 1,1,1,1,1,
@@ -10,15 +17,31 @@ const uint16_t font_3x5_d[] =
     0,1,1,1,1, 0,0,1,0,0, 1,1,1,0,0,
     1,0,1,1,1, 1,0,1,0,1, 1,1,1,0,1,
     1,0,1,1,1, 1,0,1,1,1, 1,1,1,1,1,
-    1,1,1,1,1, 1,0,0,0,0, 1,0,0,0,0
+    1,1,1,1,1, 1,0,0,0,0, 1,0,0,0,0,
+    1,1,1,1,1, 1,0,1,0,1, 1,1,1,1,1,
+    1,1,1,1,1, 1,0,1,0,1, 1,1,1,0,1
 };
 
 
-
+/*
+ * Offset at witch the buffer is drawn to the screen
+ */
 volatile uint16_t start_page = 0;
+/*
+ * Indicates whether data has been sampled
+ */
 volatile uint8_t sampled = 0;
+/*
+ * Current state of the Oscilloscope
+ */
 volatile uint8_t lcd_osc_state = 0;
+/*
+ * Pointer to the buffer, where sampled data should be written to
+ */
 uint8_t * buffer_tr;
+/*
+ * Size of buffer array
+ */
 #define BUFFER_WIDTH (LCD_WIDTH * 2)
 /*
 *   Fill Screen with x and y axis
@@ -290,27 +313,6 @@ void sample_data(uint8_t *  buffer, uint32_t size )
     }
     ACSR &= ~(1 << ACI);
     while(ADCSRA & (1<<ADSC));
-}
-void draw_screen(uint8_t * buffer,uint8_t * shadow  )
-{
-    uint8_t * v_ptr = buffer;
-    int x = LCD_WIDTH - left_limit;
-    while(x > 0)
-    {
-        lcd_draw_pixel_at(x,shadow[x],BLACK);
-        if(*v_ptr > 236){
-            shadow[x] = 236;
-            }
-        else if( *v_ptr < 0){
-            shadow[x] = 0;
-        }
-        else{
-            shadow[x] = *v_ptr;
-        }
-        lcd_draw_pixel_at(x,shadow[x],BLUE);
-        x--;
-        v_ptr++;
-    }
 }
 /*
  * Shadow has to be 2 * lcd size

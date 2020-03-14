@@ -53,7 +53,6 @@ void osc_trigger_wave_single(uint8_t * shadow);
 void draw_screen_cont_ns(uint8_t * buffer);
 void lcd_osc_clear_screen(uint8_t * shadow);
 
-void trigger_wave(uint8_t * shadow);
 /*
  * Stores a certain amount of data into a buffer
  * 

@@ -484,58 +484,6 @@ void draw_screen_cont_ns(uint8_t * buffer)
 }
 
 
-void trigger_wave(uint8_t * shadow)
-{
-    uint8_t buffer_trigger[ BUFFER_WIDTH ];
-    buffer_tr = buffer_trigger;
-    start_page = 0;
-    sampled = 0;
-    EICRA |= 0b11 << ISC00;
-    EIMSK |= 1 << INT0;
-    DDRC &= ~((1 << PC3) | (1 << PC4));
-    PORTC &= ~((1 << PC3)  | (1 << PC4));
-    
-    sample_data(buffer_trigger, BUFFER_WIDTH);
-    ACSR = (0 << ACD) | (0 << ACBG) | ( 1 << ACIE) | (0b11 <<ACIS0) ;
-    DIDR1 |= (0b11 << AIN0D);
-    sei();
-    while(1)
-    {
-        draw_screen_cont(&buffer_trigger[start_page],shadow);
-        while(1)
-        {
-            if(sampled == 1){
-                start_page = 0;
-                sampled = 0;
-                break;
-            }
-            else if((PINC & (1 << PC3)))
-            {
-                start_page += 10;
-                if(start_page >= (BUFFER_WIDTH - (LCD_WIDTH - left_limit)))
-                {
-                    start_page =  (BUFFER_WIDTH - (LCD_WIDTH - left_limit + 1));
-                }
-                break;
-            }
-            else if((PINC & (1 << 4)))
-            {
-                if(start_page < 11 )
-                {
-                    start_page = 0;
-                }
-                else
-                {
-                    start_page-= 10;
-                }
-                break;
-            };
-        };
-    }
-
-
-    
-}
 
 
 void lcd_osc_clear_screen(uint8_t * shadow)

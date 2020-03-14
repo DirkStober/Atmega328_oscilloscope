@@ -107,45 +107,6 @@ uint8_t lcd_set_cursor_y(uint16_t y);
  */
 uint8_t lcd_draw_pixel(uint16_t color);
 
-/**
- * This function fill the hole TFT with a user defined Color.
- * @param bg_color Backgroundcolor
- */
-void lcd_fill(uint16_t bg_color);
-
-/**
- * This function will draw a line from (
-#define DD_MISO PB3
-#define DD_MOSI PB2
-#define DD_SCK PB1
-#define DD_SS PB0 x0,y0) to (x1,y1).
- * @param x0 X-Coordinate of Startpoint
- * @param y0 Y-Coordinate of Startpoint
- * @param x1 X-Coordinate of Endpoint
- * @param y1 Y-Coordinate of Endpoint
- * @param color Foreground color of the Pixel
- */
-void lcd_draw_line(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16_t color);
-
-/**
- * This function will draw a vertical line from (x0,y0) to (x1,y1).
- * This function provide a performance increase compared to lcd_draw_line.
- * @param x X-Coordinate of the line
- * @param y0 Y-Coordinate of Startpoint
- * @param y1 Y-Coordinate of Endpoint
- * @param color
- */
-void lcd_draw_ver_line(uint16_t x, uint16_t y0, uint16_t y1, uint16_t color);
-
-/**
- * This function will draw a horizontal line from (x0,y0) to (x1,y1).
- * This function provide a performance increase compared to lcd_draw_line.
- * @param y Y-Coordinate of the line
- * @param x0 X-Coordinate of Startpoint
- * @param x1 X-Coordinate of Endpoint
- * @param color
- */
-void lcd_draw_hor_line(uint16_t y, uint16_t x0, uint16_t x1, uint16_t color);
 
 /**
  * This function will draw a Pixel at (x,y)
@@ -154,75 +115,5 @@ void lcd_draw_hor_line(uint16_t y, uint16_t x0, uint16_t x1, uint16_t color);
  * @param color Foreground color of the Pixel
  */
 void lcd_draw_pixel_at(uint16_t x, uint16_t y, uint16_t color);
-
-/**
- * This function will draw a filled rect from (x0,y0) to (x1,y1)
- * @param x0 Start-X-Coordinate
- * @param y0 Start-Y-Coordinate
- * @param x1 End-X-Coordinate
- * @param y1 End-Y-Coordinate
- * @param color Foregroundcolor of the rect
- */
-void lcd_fill_rect(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16_t color);
-
-/**
- * This function will draw a rect from (x0,y0) to (x1,y1)
- * @param x0 Start-X-Coordinate
- * @param y0 Start-Y-Coordinate
- * @param x1 End-X-Coordinate
- * @param y1 End-Y-Coordinate
- * @param color Foregroundcolor of the rect
- */
-void lcd_draw_rect(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, uint16_t color);
-
-/**
- * Draw a circle with the center at (xm,ym) and the radius (r)
- * @param xm X-Coordinate of the Centerpoint
- * @param ym Y-Coordinate of the Centerpoint
- * @param r Radius of the circle
- * @param color Foregroundcolor of the circle
- */
-void lcd_draw_circle(int16_t xm, int16_t ym, int16_t r, uint16_t color);
-
-/**
- * Draw a filled circle with the center at (xm,ym) and the radius (r)
- * @param xm X-Coordinate of the Centerpoint
- * @param ym Y-Coordinate of the Centerpoint
- * @param r Radius of the circle
- * @param color Foregroundcolor of the circle
- */
-void lcd_draw_filled_circle (uint16_t xm, uint16_t ym, uint8_t r, uint16_t color);
-
-/**
- * This function will draw a chatacter at (x,y)
- * @param x X-Coordinate
- * @param y Y-Coordinate
- * @param c Character to draw
- * @param fIndex Index to the character (first entry is the width of the character)
- * @param fg_color Foregroundcolor
- * @param bg_color Backgroundcolor
- */
-void lcd_draw_char (uint16_t x, uint16_t y, uint16_t fIndex, uint16_t fg_color, uint16_t bg_color);
-
-/**
- * This function will draw a string at (x,y)
- * @param x X-Coordinate
- * @param y Y-Coordinate
- * @param pS Pointer to string
- * @param fg_color Foregroundcolor
- * @param bg_color Backgroundcolor
- */
-void lcd_draw_string (uint16_t x, uint16_t y, const char *pS, uint16_t fg_color, uint16_t bg_color);
-
-/**
- * This function will draw Numbers on the screen
- * @param x X-Coordinate of the number
- * @param y Y-Coordinate of the number
- * @param nr The number as char
- * @param fg_color Foregroundcolor
- * @param bg_color Backgroundcolor
- * @param size (0) for normal or (1) for big
- */
-void lcd_draw_number (uint16_t x, uint16_t y, char nr, uint16_t fg_color, uint16_t bg_color, uint8_t size);
 
 #endif	/* LCD_H */

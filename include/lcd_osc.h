@@ -18,7 +18,7 @@
 
 extern uint16_t left_limit;
 
-void lcd_osc_init(int grid);
+void lcd_osc_init();
 
 /*
  * Runs the Oscilloscope

@@ -46,77 +46,49 @@ uint8_t * buffer_tr;
 /*
 *   Fill Screen with x and y axis
 */
-void lcd_osc_init(int grid){
+void lcd_osc_init(){
     lcd_init();
     uint16_t width = LCD_WIDTH, height = LCD_HEIGHT;
     /* Enable ports to switch modes*/
     DDRC &= ~((1<< PC2) | (1 << PC3) | (1 << PC4));
     PORTC &= ~((1<< PC2) | (1 << PC3)  | (1 << PC4));
-    if(grid == 0){
-        left_limit = 5;
-        while(width--)
+    left_limit = 11;
+    while(width--)
+    {
+        while(height--)
         {
-            while(height--)
-            {
-                if(width == 2){
-                    lcd_draw_pixel(LIME);
-                }
-                else if(height == 2){
-                    lcd_draw_pixel(LIME);
-                }
-                else{
-                    lcd_draw_pixel(BLACK);
-                };
+            if(width == 9){
+                lcd_draw_pixel(LIME);
             }
-            height = LCD_HEIGHT;
-        }
-    }
-    /*
-    * ..---.--|-  -  -  - 
-    * 012345678
-    */
-    else {
-        left_limit = 11;
-        while(width--)
-        {
-            while(height--)
-            {
-                if(width == 9){
-                    lcd_draw_pixel(LIME);
-                }
-                else if(height == 2){
-                    lcd_draw_pixel(LIME);
-                }
-                else{
-                    lcd_draw_pixel(BLACK);
-                };
+            else if(height == 2){
+                lcd_draw_pixel(LIME);
             }
-            height = LCD_HEIGHT;
+            else{
+                lcd_draw_pixel(BLACK);
+            };
         }
-        // draw digits for 0.37 (min) V 
-        draw_digit_5x3(LCD_WIDTH - 8, LCD_HEIGHT - 9,7,WHITE);
-        draw_digit_5x3(LCD_WIDTH - 4, LCD_HEIGHT - 9,3,WHITE);
-        lcd_draw_pixel_at(LCD_WIDTH - 1,LCD_HEIGHT-5,LIME);
-        // draw digits for 5,4,3,2,1 V
-        int i = 0;
-        #define digit_offset -2
-        uint16_t y_values_digit[5] = {204 + digit_offset,153 + digit_offset,102 + digit_offset,51 + digit_offset,0};
-        uint16_t y_values[5] = {204,153,102,51,0};
-        for(i = 1; i < 6 ; i++)
-        {
-                draw_digit_5x3(LCD_WIDTH - 6, y_values_digit[i - 1],i,WHITE);
-                lcd_draw_pixel_at(LCD_WIDTH - 8,y_values[i - 1],WHITE);
-                lcd_draw_pixel_at(LCD_WIDTH - 9,y_values[i - 1],WHITE);
-        }
+        height = LCD_HEIGHT;
     }
-        
-    
-
+    // draw digits for 0.37 (min) V 
+    draw_digit_5x3(LCD_WIDTH - 8, LCD_HEIGHT - 9,7,WHITE);
+    draw_digit_5x3(LCD_WIDTH - 4, LCD_HEIGHT - 9,3,WHITE);
+    lcd_draw_pixel_at(LCD_WIDTH - 1,LCD_HEIGHT-5,LIME);
+    // draw digits for 5,4,3,2,1 V
+    int i = 0;
+    #define digit_offset -2
+    uint16_t y_values_digit[5] = {204 + digit_offset,153 + digit_offset,102 + digit_offset,51 + digit_offset,0};
+    uint16_t y_values[5] = {204,153,102,51,0};
+    for(i = 1; i < 6 ; i++)
+    {
+            draw_digit_5x3(LCD_WIDTH - 6, y_values_digit[i - 1],i,WHITE);
+            lcd_draw_pixel_at(LCD_WIDTH - 8,y_values[i - 1],WHITE);
+            lcd_draw_pixel_at(LCD_WIDTH - 9,y_values[i - 1],WHITE);
+    }
 }
 
 void osc_run()
 {
-    lcd_osc_init(1);
+    lcd_osc_init();
     lcd_osc_state = state_display_voltage;
     uint8_t shadow[LCD_WIDTH * 2] = {10};
     while(1)
@@ -509,11 +481,6 @@ void lcd_osc_clear_screen(uint8_t * shadow)
 
 }
 
-ISR(ANALOG_COMP_vect)
-{
-    sampled = 1;
-    sample_data(buffer_tr,BUFFER_WIDTH);
-}
 
 uint8_t readADC()
 {
@@ -527,4 +494,13 @@ uint8_t readADC_sample()
   while(ADCSRA & (1<<ADSC));
   ADCSRA |= (1<<ADSC);
   return (ADCH );
+}
+
+
+
+
+ISR(ANALOG_COMP_vect)
+{
+    sampled = 1;
+    sample_data(buffer_tr,BUFFER_WIDTH);
 }

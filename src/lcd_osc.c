@@ -49,7 +49,7 @@ uint8_t * buffer_tr;
 void lcd_osc_init(){
     lcd_init();
     uint16_t width = LCD_WIDTH, height = LCD_HEIGHT;
-    /* Enable ports to switch modes*/
+    /* Set ports as inputs to switch modes*/
     DDRC &= ~((1<< PC2) | (1 << PC3) | (1 << PC4));
     PORTC &= ~((1<< PC2) | (1 << PC3)  | (1 << PC4));
     left_limit = 11;
@@ -173,7 +173,6 @@ void osc_trigger_wave(uint8_t * shadow)
 {
     //lcd_osc_clear_screen();
     //adc_prescaler = 0b111 - (readInpPre() >> 5);
-    sei();
     uint8_t buffer_trigger[ BUFFER_WIDTH ];
     buffer_tr = buffer_trigger;
     start_page = 0;
@@ -181,6 +180,7 @@ void osc_trigger_wave(uint8_t * shadow)
     
     ACSR = (0 << ACD) | (0 << ACBG) | (1 << ACI) | ( 1 << ACIE) | (0b11 <<ACIS0) ;
     DIDR1 |= (0b11 << AIN0D);
+    sei();
     while(sampled == 0){};
     sampled = 0;
     int trigger_allowed = 0;
@@ -475,6 +475,7 @@ void lcd_osc_clear_screen(uint8_t * shadow)
             }
             lcd_draw_pixel(BLACK);
         }
+        shadow[s] = 0;
         x--;
         s--;
     }

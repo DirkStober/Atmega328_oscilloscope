@@ -36,16 +36,16 @@ void msDelay (uint8_t ms)
   #define sda_sw 1
 void lcd_init (void)
 {    
-  DDRD |= (1 << sda_sw) | (1 << scl_sw);
-  DDRB = (1 << LCD_DC)  | (1 << LCD_RST) | (1 << LCD_CS) | (1 << DD_MOSI) | (1 << DD_SCK) | (1 << DD_SS);
-  PORTB |= (1 << DD_SS);
-  SPCR = (1<<SPE)|(1<<MSTR)|(0b00<<SPR0);
-  SPSR |= (1 << SPI2X);
-  int i = 0;
-  uint16_t val;
-  PORTB &= ~(1 << LCD_RST);
-  _delay_ms(100);
-  PORTB |= (1 << LCD_RST);
+    DDRD |= (1 << sda_sw) | (1 << scl_sw);
+    DDRB = (1 << LCD_DC)  | (1 << LCD_RST) | (1 << LCD_CS) | (1 << DD_MOSI) | (1 << DD_SCK) | (1 << DD_SS);
+    PORTB |= (1 << DD_SS);
+    SPCR = (1<<SPE)|(1<<MSTR)|(0b00<<SPR0);
+    SPSR |= (1 << SPI2X);
+    int i = 0;
+    uint16_t val;
+    PORTB &= ~(1 << LCD_RST);
+    _delay_ms(100);
+    PORTB |= (1 << LCD_RST);
     lcd_send(LCD_REG,  0xCB);
     lcd_send(LCD_DATA, 0x39);
     lcd_send(LCD_DATA, 0x2C);
@@ -143,12 +143,12 @@ void lcd_init (void)
     lcd_send(LCD_DATA, 0x31);
     lcd_send(LCD_DATA, 0x36);
     lcd_send(LCD_DATA, 0x0F);
-    
+
     lcd_send(LCD_REG,  0x11); // Sleep out
     msDelay(120);
     lcd_send(LCD_REG, 0x2c);  
     //lcd_fill(BLACK);
-    
+
     lcd_send(LCD_REG, 0x29); // Display on 
     lcd_send(LCD_REG, 0x2c);
     
